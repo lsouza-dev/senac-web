@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <main>
+        <div id="container">
+            <h1>Formulário de Cadastro</h1>
+            <form>
+                <div class="container-campo-formulario">
+                    <label for="nome">Nome <span class="campo-obrigatorio">*</span></label>
+                    <input type="text" placeholder="Digite seu nome" required class="campo-formulario" name="nome" id="nome">
+                </div>
+                <div class="container-campo-formulario">
+                    <label for="email">Email <span class="campo-obrigatorio">*</span></label>
+                    <input type="email" placeholder="seu-email@dominio.com" required class="campo-formulario" name="email" id="email">
+                </div>
+                <div class="container-campo-formulario">
+                    <label for="senha">Senha <span class="campo-obrigatorio">*</span></label>
+                    <input type="password" placeholder="****" required class="campo-formulario" name="senha" id="senha">
+                </div>
+                <div class="container-campo-formulario">
+                    <label for="confirmar_senha">Confirmar Senha <span class="campo-obrigatorio">*</span></label>
+                    <input type="password" placeholder="****" required class="campo-formulario" name="confirmar_senha" id="confirmar_senha">
+                </div>
+                <div id="rua-numero-container">
+                    <div class="container-campo-formulario">
+                        <label for="rua">Rua <span class="campo-obrigatorio">*</span></label>
+                        <input type="text" required class="campo-formulario" name="rua" id="rua">
+                    </div>
+                    <div class="container-campo-formulario">
+                        <label for="numero">Número</label>
+                        <input type="number" placeholder="123" class="campo-formulario" name="numero" id="numero">
+                    </div>
+                </div>
+                <div class="container-campo-formulario">
+                    <label for="bairro">Bairro <span class="campo-obrigatorio">*</span></label>
+                    <input type="text" required class="campo-formulario" name="bairro" id="bairro">
+                </div>
+                <div class="container-campo-formulario">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" class="campo-formulario" name="complemento" id="complemento">
+                </div>
+                <button id="btn-enviar">Enviar</button>
+            </form>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>

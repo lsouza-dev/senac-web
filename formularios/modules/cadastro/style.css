@@ -1,0 +1,49 @@
+main {
+    padding: 24px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#rua-numero-container {
+    display: grid;
+    column-span: 1;
+    grid-column: span 2;
+    grid-template-columns: 3fr 1fr;
+    gap: 8px;
+}
+
+#btn-enviar {
+    padding: 4px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    grid-column: span 2;
+    justify-self: end;
+}
+
+.campo-obrigatorio {
+    color: red;
+}
+
+label {
+    font-size: 12px;
+}
+
+@media (width < 748px) {
+    
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    #rua-numero-container {
+        grid-column: span 1;
+        grid-template-columns:1fr 1fr;
+    }
+
+    #btn-enviar {
+        grid-column:  span 1;
+    }
+
+}
