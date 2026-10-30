@@ -104,40 +104,131 @@ CREATE TABLE IF NOT EXISTS matriculas (
 INSERT INTO matriculas
 (aluno_id,curso_id,data_matricula,nota)
 VALUES
-(6,1,"2026-10-28 12:00",10);
+(4,1,"2026-10-28 12:00",10);
 
 
 SELECT * FROM matriculas;
 
 DELETE FROM matriculas
-WHERE aluno_id = 1;
+WHERE id = 3;
 
 DELETE FROM alunos
-WHERE id = 1;
+WHERE id = 6;
 
 -- Insira uma matrícula válida e depois tente excluir o aluno dessa matrícula. O que acontece?
 
--- Crie a tabela disciplinas com professor_id como chave estrangeira para professores. Que tipo de relacionamento existe entre professor e disciplina?
+-- Crie a tabela disciplinas com 
+-- professor_id como chave estrangeira para professores. Que tipo de relacionamento existe entre professor e disciplina?
 
--- Reflexão: por que matriculas guarda aluno_id em vez do nome do aluno?
+CREATE TABLE IF NOT EXISTS disciplinas (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    titulo VARCHAR(100) NOT NULL
+);
+
+INSERT INTO disciplinas 
+(titulo)
+VALUES
+("Front-end"),
+("Back-end"),
+("Design");
+
+CREATE TABLE IF NOT EXISTS professores_disciplinas (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_disciplina INT NOT NULL,
+    id_professor INT NOT NULL,
+    data_inicio DATE NOT NULL,
+    data_fim DATE,
+    
+    -- CHAVE ESTRANGEIRA DE DISCIPLINA
+    CONSTRAINT fk_professores_disciplinas_disciplina -- Nome da Chave
+    FOREIGN KEY (id_disciplina) --  Campo nessa tabela que vai receber o Id da tabela de Disciplinas
+    REFERENCES disciplinas (id), -- Tabela e chave que será usada
+    
+    -- CHAVE ESTRANGEIRA DE PROFESSOR
+    CONSTRAINT fk_professores_disciplinas_professor
+    FOREIGN KEY (id_professor)
+    REFERENCES professores (id)
+);
+
+
+INSERT INTO professores_disciplinas
+(id_disciplina,id_professor,data_inicio,data_fim)
+VALUES
+(1,1,"2026-10-01","2026-10-31"),
+(2,1,"2026-09-01","2026-09-30"),
+(3,1,"2026-08-01","2026-08-29"),
+(1,2,"2026-10-01","2026-10-31"),
+(2,2,"2026-09-01","2026-09-30"),
+(3,2,"2026-08-01","2026-08-29");
 
 
 
 -- Parte 3: ON DELETE e ON UPDATE
 
--- Crie a tabela avaliacoes ligada a matriculas com ON DELETE CASCADE. Exclua uma matrícula e observe o que acontece.
+-- Crie a tabela avaliacoes ligada a matriculas 
+-- com ON DELETE CASCADE. Exclua uma matrícula e observe o que acontece.
 
--- Crie a tabela anotacoes ligada a cursos com ON DELETE SET NULL, usando uma coluna que aceite NULL. Exclua um curso e observe.
+
+CREATE TABLE IF NOT EXISTS avaliacoes (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(50) NOT NULL,
+    id_matricula INT NOT NULL,
+    nota FLOAT NOT NULL DEFAULT 0,
+    
+    CONSTRAINT fk_avaliacoes_matriculas
+    FOREIGN KEY (id_matricula)
+    REFERENCES matriculas (id)
+    ON UPDATE
+    
+);
+
+INSERT INTO avaliacoes 
+(titulo,id_matricula,nota)
+VALUES
+("Deploy de Aplicações",4,10),
+("Desenvolvimento Front-end",4,6),
+("Github",4,9),
+("Desenvolvimento de API",4,10),
+("Github",5,6),
+("Desenvolvimento de API",5,3);
+
+
+-- Crie a tabela anotacoes ligada a cursos 
+-- com ON DELETE SET NULL, usando uma coluna que aceite NULL. Exclua um curso e observe.
 
 -- Tente excluir um curso que tem matrículas usando a regra padrão (RESTRICT). O que acontece?
 
--- Crie uma chave estrangeira com ON UPDATE CASCADE e altere o id de um curso. Os registros filhos acompanham a mudança?
+-- Crie uma chave estrangeira com ON UPDATE CASCADE 
+-- e altere o id de um curso. 
+-- Os registros filhos acompanham a mudança?
 
 
 
 -- Parte 4: desafios de consultas
 
 -- Liste o nome do aluno e o título do curso de cada matrícula.
+
+SELECT
+matriculas.id,
+alunos.nome,
+alunos.email,
+cursos.titulo,
+matriculas.nota
+FROM matriculas -- CONSULTA NA TABELA DE MATRICULAS
+
+INNER JOIN cursos  -- QUAL TABELA EU TAMBÉM QUERO CONSULTAR
+ON matriculas.curso_id = cursos.id -- QUAIS COLUNAS SE RELACIONAM
+
+INNER JOIN alunos
+ON matriculas.aluno_id = alunos.id;
+
+
+SELECT * FROM matriculas,cursos;
+
+SELECT * FROM cursos
+WHERE id = 1;
+
+
 
 -- Liste todos os alunos, inclusive os que não têm nenhuma matrícula.
 
@@ -152,3 +243,23 @@ WHERE id = 1;
 -- Desafio: liste os alunos que nunca fizeram um curso com carga horária maior que 60.
 
 -- Desafio: para cada curso, mostre o aluno com a maior nota. 
+
+
+SELECT
+avaliacoes.id,
+avaliacoes.titulo,
+avaliacoes.nota,
+matriculas.id,
+alunos.*,
+cursos.*
+FROM avaliacoes
+INNER JOIN matriculas
+ON avaliacoes.id_matricula = matriculas.id
+INNER JOIN alunos
+ON alunos.id = matriculas.aluno_id
+INNER JOIN cursos
+ON cursos.id = matriculas.curso_id;
+
+
+
+
